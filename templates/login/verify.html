@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!-- 暂时废弃 -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="爱接力IT信息查询系统">
+    <meta name="author" content="爱接力IT信息查询系统">
+
+    <title>爱接力IT信息平台</title>
+    <!-- Bootstrap core CSS 全局静态文件路径-->
+    <link rel="stylesheet" type="text/css" href="{% static 'bit37/css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'bit37/css/signin.css' %}">
+
+    <script type="text/javascript" src="https://testbackend.goodaa.com.cn/ejiazi-backend/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="https://testbackend.goodaa.com.cn/ejiazi-backend/js/layer/layer.js"></script>
+  </head>
+  <body>
+        {% if req %}
+        <p onclick='alert({{ req }})'></p>
+        <p>%s</p><p><a href="http://%s/login/">返回登陆页</a></p>
+        {% endif %}
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
+  </body>
+</html>

@@ -1,0 +1,65 @@
+﻿{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="爱接力IT信息查询系统">
+    <meta name="author" content="爱接力IT信息查询系统">
+
+    <title>爱接力IT信息平台</title>
+    <!-- Bootstrap core CSS 全局静态文件路径-->
+    <link rel="stylesheet" type="text/css" href="{% static 'bit37/css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'bit37/css/signin.css' %}">
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <form class="form-signin" method="post">
+        {% csrf_token %}
+        <h4 class="form-signin-heading">登陆IT系统</h4>
+        <label for="inputEmail" class="sr-only">username</label>
+        <input type="text" name="username" class="form-control" placeholder="username" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> 记住密码
+          </label>
+        </div>
+        <button class="btn btn-primary" type="submit">登陆</button>
+        <a class="btn btn-danger" href="{{ server }}/reset">忘记密码</a>
+      </form>
+        
+   </div> <!-- /container -->
+
+   <!--腾讯企业邮箱登陆页面-->
+   <style>
+    .bizmail_loginpanel{font-size:12px;width:300px;height:auto;border:1px solid #ef0a0a;background:#ffffff;}
+    .bizmail_LoginBox{padding:10px 15px;}
+    .bizmail_loginpanel h3{padding-bottom:5px;margin:0 0 5px 0;border-bottom:1px solid #cccccc;font-size:14px;}
+    .bizmail_loginpanel form{margin:0;padding:0;}
+    .bizmail_loginpanel input.text{class="form-control"}
+    .bizmail_loginpanel .bizmail_column{height:28px;}
+    .bizmail_loginpanel .bizmail_column label{display:block;float:left;width:30px;height:24px;line-height:24px;font-size:12px;}
+    .bizmail_loginpanel .bizmail_column .bizmail_inputArea{float:left;width:240px;}
+    .bizmail_loginpanel .bizmail_column span{font-size:12px;word-wrap:break-word;margin-left: 2px;line-height:200%;}
+    .bizmail_loginpanel .bizmail_SubmitArea{margin-left:30px;clear:both;}
+    .bizmail_loginpanel .bizmail_SubmitArea a{font-size:12px;margin-left:5px;}
+    .bizmail_loginpanel select{width:110px;height:20px;margin:0 2px;}
+  </style>
+
+  <div class="form-signin">
+  <script type="text/javascript" src="http://exmail.qq.com/zh_CN/htmledition/js_biz/outerlogin.js"  charset="gb18030"></script>
+  <script type="text/javascript">
+    writeLoginPanel({domainlist:"e-jiazi.com", mode:"vertical"});
+  </script>
+  </div>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
+  </body>
+</html>

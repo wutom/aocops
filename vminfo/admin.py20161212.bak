@@ -1,0 +1,76 @@
+# -*- coding: utf-8 -*-
+from django.contrib import admin
+from django.forms import CheckboxSelectMultiple
+from index.models import aocops_fileImage
+from vminfo.models import vm_info, info_label, info_location, info_types, info_status 
+from vminfo.models import app_info, info_manager,app_info_types,info_group, app_info_label
+from vminfo.models import app_info_alarm
+
+#主机类型
+class vminfo_label(admin.ModelAdmin):
+    list_display = [('label')]
+    list_per_page = 50
+    ordering = ['id',]
+class vminfo_location(admin.ModelAdmin):
+    list_display = [('location')]
+    list_per_page = 50
+    ordering = ['id',]
+class vminfo_types(admin.ModelAdmin):
+    list_display = [('types')]
+    list_per_page = 50
+    ordering = ['id',]
+class vminfo_status(admin.ModelAdmin):
+    list_display = [('status')]
+    list_per_page = 50
+    ordering = ['id',]
+class vminfo_manager(admin.ModelAdmin):
+    list_display = ('mana_name','mana_phone','mana_email','mana_group')
+    list_per_page = 50
+    ordering = ['id',]
+class vminfo_group(admin.ModelAdmin):
+    list_display = [('group_name')]
+    list_per_page = 50
+    ordering = ['id',]
+#主机信息
+class vminfo_vm_info(admin.ModelAdmin):
+    list_display = ('hostname','machine_id','os_version', 'lan_ipaddr', 'vm_location','vm_status')
+    search_fields = ['machine_id']
+    list_per_page = 50
+    ordering = ['id',]
+
+
+#程序信息
+class vmapp_info(admin.ModelAdmin):
+    list_display = ('app_path','app_ipadd_port','app_vm_id','app_types','app_vm_status','app_manager','app_alarm','app_index')
+    search_fields = ['app_path']
+    list_per_page = 50
+    ordering = ['id',]
+
+class vmapp_info_types(admin.ModelAdmin):
+    list_display = [('app_types')]
+    list_per_page = 50
+    ordering = ['id',]
+
+class vmapp_info_label(admin.ModelAdmin):
+    list_display = [('label_name')]
+    list_per_page = 50
+    ordering = ['id',]
+
+class vmapp_info_alarm(admin.ModelAdmin):
+    list_display = [('alarm_types')]
+    list_per_page = 50
+    ordering = ['id',]
+
+
+admin.site.register(vm_info,vminfo_vm_info)
+admin.site.register(info_label,vminfo_label)
+admin.site.register(info_location,vminfo_location)
+admin.site.register(info_types,vminfo_types)
+admin.site.register(info_status,vminfo_status)
+admin.site.register(info_manager,vminfo_manager)
+admin.site.register(info_group,vminfo_group)
+
+admin.site.register(app_info,vmapp_info)
+admin.site.register(app_info_types,vmapp_info_types)
+admin.site.register(app_info_label,vmapp_info_label)
+admin.site.register(app_info_alarm,vmapp_info_alarm)

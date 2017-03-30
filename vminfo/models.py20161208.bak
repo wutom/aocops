@@ -1,0 +1,70 @@
+# -*- coding:utf-8 -*-
+from django.db import models
+from django.contrib import admin
+import os
+
+#主机信息-单项分类
+class info_label(models.Model):
+    label = models.CharField(u'业务标签', max_length=8)
+
+    def __unicode__(self):
+        return self.label
+    class Meta:
+        verbose_name = verbose_name_plural = u'业务标签'
+        db_table = 'vminfo_info_label'
+
+class info_location(models.Model):
+    location = models.CharField(u'放置位置', max_length=20)
+
+    def __unicode__(self):
+        return self.location
+    class Meta:
+        verbose_name = verbose_name_plural = u'放置位置'
+        db_table = 'vminfo_info_location'
+
+class info_types(models.Model):
+    types = models.CharField(u'主机类型', max_length=16)
+
+    def __unicode__(self):
+        return self.types
+    class Meta:
+        verbose_name = verbose_name_plural = u'主机类型'
+        db_table = 'vminfo_info_types'
+
+class info_status(models.Model):
+    status = models.CharField(u'主机状态', max_length=16)
+
+    def __unicode__(self):
+        return self.status
+    class Meta:
+        verbose_name = verbose_name_plural = u'主机状态'
+        db_table = 'vminfo_info_status'
+
+class info_manager(models.Model):
+    manager = models.CharField(u'维护人', max_length=16)
+
+    def __unicode__(self):
+        return self.manager
+    class Meta:
+        verbose_name = verbose_name_plural = u'维护人'
+        db_table = 'vminfo_info_manager'
+
+##主机信息
+class vm_info(models.Model):
+    hostname = models.CharField(u'主机名', max_length=20, null = True)
+    machine_id = models.CharField(u'主机ID', max_length=16, null = True)
+    os_version = models.CharField(u'OS版本', max_length=20, null = True)
+    lan_ipaddr = models.CharField(u'内网IP', max_length=20, )
+    vm_location = models.ForeignKey(info_location, verbose_name=u'放置位置')
+    vm_types = models.ForeignKey(info_types, verbose_name=u'主机类型')
+    vm_status = models.ForeignKey(info_status, verbose_name=u'主机状态')
+    vm_label = models.ForeignKey(info_label, verbose_name=u'业务标签')
+    vm_manager = models.ForeignKey(info_manager, verbose_name=u'维护人')
+    vm_remark = models.TextField(u'备注信息', max_length=256, null = True)
+
+    def __unicode__(self):
+        return self.hostname
+
+    class Meta:
+        verbose_name = verbose_name_plural = u'主机信息'
+        db_table = 'vminfo_vm_info'

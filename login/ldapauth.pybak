@@ -1,0 +1,40 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import ldap
+
+host = "ldap://192.168.1.202"
+bashDN = "ou=aijieli,dc=aijieli,dc=com"
+Admin = "cn=Manager,dc=aijieli,dc=com"
+Admin_pass = "aijieli"
+
+def ldap_getcn(name):
+	try:
+		ldap.set_option(ldap.OPT_REFERRALS,0)
+		conn = ldap.initialize(host)
+		conn.protocol_version = ldap.VERSION3
+		conn.simple_bind(Admin,Admin_pass)
+ 
+		Filter = "(&(|(cn=" + name + ")))"       
+		ldap_result_id = conn.search(bashDN,ldap.SCOPE_SUBTREE,Filter,None)
+
+		result_data = conn.result(ldap_result_id,0)
+		if result_data[1] == []:
+			print "%s doesn't exist." %name
+		else:
+			LDID = result_data[1][0][0]
+			return LDID
+	except ldap.LDAPError, e:
+		print e
+		conn.unbind_s()
+
+def LDAPlogin(username,password):
+	try:
+		ldap.set_option(ldap.OPT_REFERRALS,0)
+		CN = ldap_getcn(username)
+		login = ldap.initialize(host)
+		login.simple_bind_s(CN,password)
+		login.unbind_s()
+		return 'True' 
+	except Exception,e:
+		return 'False'
