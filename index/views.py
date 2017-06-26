@@ -89,7 +89,7 @@ def index(request):
 	return HttpResponse(template.render(context))
 
 '''
-@login_required(login_url='/login/')
+#@login_required(login_url='/login/')
 def index(request):
 	username = request.COOKIES.get('username', '')
 	##获取概览数据
