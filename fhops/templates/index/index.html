@@ -1,0 +1,174 @@
+{% load staticfiles %}
+{% include "index/head.html" %}
+<!-- 左边导航栏部分-->
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://{{ server }}/login">退出登录</a></li>
+            <li><a href="http://{{ server }}/admin">登陆后台</a></li>
+          </ul>
+          <!--<form class="navbar-form navbar-right"-->
+            <!--input type="text" class="form-control" placeholder="Search...未开发"-->
+          <!--/form-->
+        </div>
+      </div>
+    </nav>
+<!-- 侧边导航栏-->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+          <li class="active"><a href="#">信息概览 <span class="sr-only">(current)</span></a></li>
+      {% if fil %}
+        {% for id, fi in fil.items %}
+          <li><a href="http://{{ img_server }}/{{ fi.fi_image }}">{{ fi.fi_name }}</a></li>
+        {% endfor %}
+      {% endif %}      
+          </ul>
+
+<!-- 开始子页面导航和具体页面-->
+          <ul class="nav nav-sidebar">
+            <li><a href="http://{{ server }}/idcinfo">数据中心</a></li>
+            <li><a href="http://{{ server }}/hostinfo">主机信息</a></li>
+            <li><a href="http://{{ server }}/appinfo">程序信息</a></li>
+          </ul>
+          <!-----侧边栏示例代码
+          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+          </ul>
+          ----->
+        </div>
+
+        <!--------------- 仪表盘部分暂时停用-->
+        
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <!--------------------------------------
+          <h1 class="page-header">Dashboard</h1>
+
+          <div class="row placeholders">
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+          </div>
+          ---------------------------------->
+<!-- 公告栏-->
+    <div class="page-header">
+        <h4>信息公告</h4>
+      </div>
+            {% if bul %}
+              {% for id, bl in bul.items %}
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{ bl.bl_name }}</h3>
+            </div>
+              <div class="panel-body">
+              <p>{{ bl.bl_remark }}</p>
+            </div>
+          </div>
+              {% endfor %}
+            {% endif %}
+
+<!-- 概览统计--> 
+    <div class="page-header">
+        <h4>IT信息概览</h4>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">数据中心</h3>
+            </div>
+            <div class="panel-body">
+              <p>
+        <a href="http://{{ server }}/idcinfo">公有云<span class="badge">{{ cidc }}</span></a>
+        <a href="http://{{ server }}/idcinfo">物理机房<span class="badge">{{ iidc }}</span></a>
+        <a href="http://{{ server }}/idcinfo">私有云 <span class="badge">{{ pidc }}</span></a>
+              </p>
+            </div>
+          </div>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">设备汇总</h3>
+            </div>
+            <div class="panel-body">
+             <p>
+        <a href="http://{{ server }}/idcinfo">总计 <span class="badge">{{ dif }}</span></a>
+        <a href="http://{{ server }}/idcinfo">服务器 <span class="badge">{{ sif }}</span></a>
+        <a href="http://{{ server }}/idcinfo">网络 <span class="badge">{{ nif }}</span></a>
+              </p>
+            </div>
+          </div>
+        </div><!-- /.col-sm-4 -->
+        <div class="col-sm-4">
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">平台汇总</h3>
+            </div>
+            <div class="panel-body">
+              <p>
+        <a href="#">总计 <span class="badge">{{ ail }}</span></a>
+        <!--a href="#">开发测试 <span class="badge">42</span></a-->
+              </p>
+            </div>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">主机汇总</h3>
+            </div>
+            <div class="panel-body">
+              <p>
+        <a href="#">物理主机 <span class="badge">{{ sif }}</span></a>
+        <a href="#">虚拟主机 <span class="badge">{{ hif }}</span></a>
+              </p>
+            </div>
+          </div>
+        </div><!-- /.col-sm-4 -->
+        <div class="col-sm-4">
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h3 class="panel-title">程序汇总</h3>
+            </div>
+            <div class="panel-body">
+              <p>
+        <a href="#">总计 <span class="badge">{{ aif }}</span></a>
+        <!--a href="#">Online <span class="badge">42</span></a-->
+              </p>
+            </div>
+          </div>
+          <!-- 汇总概览示例代码-->
+          <!--div class="panel panel-danger">
+            <div class="panel-heading">
+              <h3 class="panel-title">Panel title</h3>
+            </div>
+            <div class="panel-body">
+              <p>
+        <a href="#">Inbox <span class="badge">42</span></a>
+        <a href="#">Inbox <span class="badge">42</span></a>
+              </p>
+            </div>
+          </div-->
+        </div><!-- /.col-sm-4 -->
+        </div>
+        </div>
+      </div>
+    </div>
+    
+{% include "index/footer.html" %}

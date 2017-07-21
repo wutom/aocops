@@ -1,0 +1,12 @@
+<html>
+<head></head>
+<body>
+<form action="/dnsfind/" method="POST">
+	<input type="text" name="domain"> 
+	<input type="text" name="dnsip">
+    {% csrf_token %}
+    <input type="submit" />
+    <p>{{ a }}</p>
+</form>
+</body>
+</html>

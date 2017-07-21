@@ -1,0 +1,82 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import os, sys
+import MySQLdb
+import json
+###数据文件
+hostfile = "../tempfile/host_info.json"
+
+
+###数据库基本配置
+dbcf={'dbhost':'localhost', \
+		'dbuser': 'aoc', \
+		'dbname': 'aoc', \
+		'dbpwd': 'aoc'}
+
+###json数据格式化部分
+def vallist(hostval):
+    val = []
+    for v in hostval:
+        v = hostval[v]
+        val.append(v)
+    return (val)
+### return 返回值只能是一个列表的形式
+def filelist(fileval):
+    hf = open(fileval)
+    hostline = []
+    for hfval in hf:
+        fileval = json.loads(hfval)
+        lineval = vallist(fileval)
+        hostline.append(lineval)
+    return hostline
+    hf.close()
+
+'''
+1.sql获取返回host信息列表的server_id 然后对比数据库如果存在更新数据，如果不存在直接拿插入一条数据
+2.sql更新函数如果server id存在
+3.sql插入函数如果server id不存在
+获取返回host信息列表的server_id 然后对比数据库如果存在更新数据，如果不存在直接拿插入一条数据
+'''
+if __name__ == '__main__':
+    db_value = filelist(hostfile)
+    db = MySQLdb.connect('%s' % dbcf['dbhost'], \
+            '%s' % dbcf['dbuser'], \
+            '%s' % dbcf['dbname'], \
+            '%s' % dbcf['dbpwd'])
+    cursor = db.cursor()
+
+    for v in db_value:
+        machine_id = v[0]
+        vm_cpu = v[1]
+        hostname = v[2]
+        vm_mem = v[4]
+        lan_ipaddr = v[5]
+        os_version = v[6]
+        vm_types = v[8]
+        vm_disk = v[9]
+
+        sqlinstert = "INSERT INTO vminfo_host_info(machine_id, vm_cpu, hostname, vm_mem, lan_ipaddr, os_version, vm_disk, vm_types) values ('%s','%s','%s','%s','%s','%s','%s','%s')" % (machine_id, vm_cpu, hostname, vm_mem, lan_ipaddr, os_version, vm_disk, vm_types)
+
+        sqlupdate = "UPDATE  vminfo_host_info SET vm_cpu='%s', hostname='%s', vm_mem='%s', lan_ipaddr='%s'    , os_version='%s', vm_disk='%s', vm_types='%s' WHERE machine_id='%s'" % (vm_cpu, hostname, vm_mem, lan_ipaddr, os_version, vm_disk, vm_types, machine_id)
+
+        cursor.execute("SELECT * FROM vminfo_host_info WHERE machine_id='%s'" % machine_id)
+        results = cursor.fetchall()
+        print len(results)
+
+        if len(results) == 1:
+            try:        ####判断数据库里面数据是否存在
+                print 'sql update'
+                cursor.execute(sqlupdate)
+                db.commit()
+            except:
+                db.rollback()
+        else:
+            try:
+                print 'sql delete instert'
+                cursor.execute("DELETE FROM vminfo_host_info WHERE machine_id='%s'" % machine_id)
+                cursor.execute(sqlinstert)
+                db.commit()
+            except:
+                db.rollback()
+    cursor.close()
+    db.close()

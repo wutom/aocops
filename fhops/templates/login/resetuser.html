@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="爱接力IT信息查询系统">
+    <meta name="author" content="爱接力IT信息查询系统">
+
+    <title>复华IT信息平台</title>
+    <!-- Bootstrap core CSS 全局静态文件路径-->
+    <link rel="stylesheet" type="text/css" href="{% static 'bit37/css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'bit37/css/signin.css' %}">
+
+    <script type="text/javascript" src="https://testbackend.goodaa.com.cn/ejiazi-backend/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="https://testbackend.goodaa.com.cn/ejiazi-backend/js/layer/layer.js"></script>
+  </head>
+
+  <body>
+    <div id="resetpw" class="container">
+      <form class="form-signin" method="post">
+      {% csrf_token %}
+        <h4 class="form-signin-heading">输入必须信息</h4>
+        <!---p>
+        <input type="radio" name="email_ldap" value="1" checked>邮箱密码
+        <input type="radio" name="email_ldap" value="2">LDAP密码
+        </p-->
+        <input type="text" name="username" class="form-control" placeholder="LDAP账户名" required autofocus>
+        <input type="text" name="userid" class="form-control" placeholder="邮箱地址" required autofocus>
+        <input type="text" name="mobile" class="form-control" placeholder="手机号码" required autofocus>
+        <p>新密码将发送到您的手机号</p>
+        <!--button class="btn btn-danger" type="button" onclick='alert("弹出窗口")'>重置密码</button-->
+        <button class="btn btn-danger" type="submit">重置密码</button>
+      </form>
+    </div>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
+  </body>
+</html>
