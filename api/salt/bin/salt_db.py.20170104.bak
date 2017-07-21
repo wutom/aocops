@@ -1,0 +1,46 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import os, sys
+import MySQLdb
+import json
+###数据文件
+db_file = "../tempfile/host_info.json"
+
+
+###数据库基本配置
+db_conf={'dbhost':'localhost', \
+		'dbuser': 'aoc', \
+		'dbname': 'aoc', \
+		'dbpwd': 'aoc'}
+
+###json数据格式化部分
+def dbvallist(dbval):
+    val = []
+    for v in dbval:
+        v = dbval[v]
+        val.append(v)
+    return val
+### return 返回值只能是一个列表的形式，需要编写一个函数值返回server_id 然后对比数据库进行数据的跟新
+def dbfilelist(dbfile):
+    db = open(dbfile)
+    for dbf in db:
+        dbfile = json.loads(dbf)
+        a = dbvallist(dbfile)
+        return a
+    db.close()
+
+'''
+###数据库更新部分
+def dbupdate():
+def dbinsert():
+def dbserverid():
+
+需要编写sql更新函数
+1.sql获取返回host信息列表的server_id 然后对比数据库如果存在更新数据，如果不存在直接拿插入一条数据
+2.sql更新函数如果server id存在
+3.sql插入函数如果server id不存在
+获取返回host信息列表的server_id 然后对比数据库如果存在更新数据，如果不存在直接拿插入一条数据
+'''
+
+if __name__ == '__main__':
+    print dbfilelist(db_file)

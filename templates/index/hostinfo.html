@@ -1,13 +1,23 @@
 {% load staticfiles %}
 {% include "index/head.html" %}
 
+<!-- 左边导航栏部分-->
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://{{ server }}/logout">注销</a></li>
+            <li><a href="http://{{ server }}/admin">登陆后台</a></li>
+          </ul>
+
+        </div>
+      </div>
+    </nav>
 
 <!-- 侧栏导航部分-->
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-          <li><a href="http://{{ server }}/index">信息概览</a></li>
+          <li><a href="http://{{ server }}/">信息概览</a></li>
       {% if fil %}
         {% for id, fi in fil.items %}
           <li><a href="http://{{ server }}/{{ fi.fi_image }}">{{ fi.fi_name }}</a></li>
@@ -15,6 +25,7 @@
       {% endif %}      
           </ul>
           <ul class="nav nav-sidebar">
+            <li><a href="http://{{ server }}/idcinfo">数据中心</a></li>
             <li class="active"><a href="http://{{ server }}/hostinfo">主机信息</a></li>
             <li><a href="http://{{ server }}/appinfo">程序信息</a></li>
           </ul>
@@ -65,7 +76,7 @@
             {% if lhp %}
               {% for pn in lhp.paginator.page_range %}
                 {% ifequal pn lhp.number %}
-            <li><a>{{ pn }}</a></li>
+            <li role="presentation" class="active"><a>{{ pn }}</a></li>
                 {% else %}
             <li><a href="?page={{ pn }}">{{ pn }}</a></li>
                 {% endifequal %}

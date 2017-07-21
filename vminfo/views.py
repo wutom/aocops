@@ -16,7 +16,7 @@ from django.utils.http import urlquote
 from django.db.models import Q
 
 #导航栏部分
-
+'''
 def host_info(request):
 	lhost = host_info.objects.all().order_by('hostname')
 	server = request.META['HTTP_HOST']
@@ -45,3 +45,4 @@ def host_info(request):
 		'server' : server
 		})
 	return HttpResponse(short(template.render(context)))
+	'''

@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="爱接力IT信息查询系统">
-    <meta name="author" content="爱接力IT信息查询系统">
+    <meta name="description" content="复华IT信息查询系统">
+    <meta name="author" content="复华IT信息查询系统">
 
-    <title>爱接力IT信息平台</title>
+    <title>优易IT信息平台</title>
     <!-- Bootstrap core CSS 全局静态文件路径-->
     <link rel="stylesheet" type="text/css" href="{% static 'bit37/css/bootstrap.min.css' %}"/>
     <link rel="stylesheet" href="{% static 'bit37/css/signin.css' %}">
@@ -20,7 +20,7 @@
 
       <form class="form-signin" method="post">
         {% csrf_token %}
-        <h4 class="form-signin-heading">登陆IT系统</h4>
+        <h4 class="form-signin-heading">登陆IT查询系统</h4>
         <label for="inputEmail" class="sr-only">username</label>
         <input type="text" name="username" class="form-control" placeholder="username" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
@@ -31,10 +31,12 @@
           </label>
         </div>
         <button class="btn btn-primary" type="submit">登陆</button>
-        <a class="btn btn-danger" href="{{ server }}/reset">忘记密码</a>
+        <!--a class="btn btn-danger" href="{{ server }}/reset">忘记密码</a-->
       </form>
         
    </div> <!-- /container -->
+
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!--<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
   </body>

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib import admin
-from vmset.models import info_manager
+from vmset.models import info_manager, info_label
  
 
 OK = 1
-MAX_DEV_PER_CABINET = 20
+MAX_DEV_PER_CABINET = 100
 # Create your models here.
 
 '''
@@ -21,11 +21,11 @@ class idc_contact(models.Model):
 		return self.contact_name
 	
 	class Meta:
-		verbose_name = verbose_name_plural = u'IDC联系人'
+		verbose_name = verbose_name_plural = u'数据中心联系人'
 		db_table = 'idc_contact'
 
 class idc_types(models.Model):
-	name = models.CharField(u'IDC类型', max_length = 12)
+	name = models.CharField(u'数据中心类型', max_length = 12)
 	remark = models.TextField(u'备注', max_length = 256, blank = True, null = True)
 
 	def __unicode__(self):
@@ -41,7 +41,7 @@ class idc_info(models.Model):
 	belong = models.ForeignKey(info_manager, verbose_name = u'维护者')
 	location = models.CharField(u'放置位置', max_length = 256, blank = True, null = True)
 	contacts = models.ManyToManyField(idc_contact, verbose_name = u'联系人')
-	types_name = models.ForeignKey(idc_types, verbose_name = u'IDC类型')
+	types_name = models.ForeignKey(idc_types, verbose_name = u'数据中心类型')
 	remark = models.TextField(u'备注', max_length = 256, blank = True, null = True)
 
 	def __unicode__(self):
@@ -53,7 +53,7 @@ class idc_info(models.Model):
 	contact_names.short_description = "联系人"
 
 	class Meta:
-		verbose_name = verbose_name_plural = u'IDC'
+		verbose_name = verbose_name_plural = u'数据中心'
 		db_table = 'idc_info'
 
 			
@@ -98,6 +98,7 @@ class device_info(models.Model):
 		('3U', '3U'),
 		('4U', '4U'),
 		('5U', '5U'),
+		('VU', 'VM'),
 	)
 	LOC_ID = []
 	for i in range(1, MAX_DEV_PER_CABINET + 1):
@@ -106,11 +107,12 @@ class device_info(models.Model):
 	name = models.CharField(u'设备名称', max_length = 32)
 	plant_no = models.CharField(u'唯一识别号', max_length = 64)
 	sn = models.CharField(u'序列号', max_length = 32, help_text='设备的序列号')
-	cabinet = models.ForeignKey(cabinet_info, verbose_name = u'机架')
-	spec = models.CharField(u'类型', max_length = 32, choices = SPEC_LIST)
+	cabinet = models.ForeignKey(cabinet_info, verbose_name = u'机柜编号或云主机地域', help_text='可以是物理IDC机柜编号也可以是云主机地域描述')
+	spec = models.CharField(u'规格尺寸', max_length = 32, choices = SPEC_LIST)
 	types = models.ForeignKey(device_type, verbose_name = u'设备类型')
-	loc = models.IntegerField(u'机架顺序', choices = LOC_ID, help_text='机架上的摆放顺序，从上至下')
+	loc = models.IntegerField(u'机架顺序', choices = LOC_ID, help_text='机架上的摆放顺序，从上至下，如果是云主机顺序可以随意')
 	user = models.ForeignKey(info_manager, verbose_name = u'维护者', help_text='设备详细信息')
+	label = models.ForeignKey(info_label, verbose_name = u'业务标签', null = True, help_text='具体业务分组或类别，例如：OPS')
 	cpu = models.CharField(u'CPU', max_length = 64, blank = True, null = True)
 	mem = models.CharField(u'内存', max_length = 64, blank = True, null = True)
 	disk = models.CharField(u'硬盘', max_length = 128, blank = True, null = True)

@@ -1,0 +1,33 @@
+#coding=utf-8
+import salt.client as sc
+import json
+'''
+    1.load_grains 获取所有主机的grains值
+    2.写入到host_info.json文件
+'''
+###salt调用
+local = sc.LocalClient()
+hostonline = local.cmd('*', 'test.ping', timeout=5)
+###目标主机指定
+try:
+    grains_file = open("host_info.json", "w")
+    gra = {}
+    for hl in hostonline:
+        grains = local.cmd(hl, "grains.items")
+        for i in grains.keys():
+            gra['ipv4'] = grains[i]["ipv4"][1]
+            gra['hostname'] = grains[i]["fqdn"]
+            gra['server_id'] = grains[i]["server_id"]
+            gra['os'] = grains[i]["osfinger"]
+            gra['types'] = grains[i]["virtual"]
+            gra['cpu_types'] = grains[i]["cpu_model"]
+            gra['cpu_num'] = grains[i]["num_cpus"]
+            gra['mem'] = grains[i]["mem_total"]
+            gra['disk_root'] = grains[i]["disk_root"]
+            gra['disk_opt'] = grains[i]["disk_opt"]
+    gra_load = json.dumps(gra, indent=4)
+    grains_file.write(i + ':' + '\n' + gra_load + '\n')
+except Exception,e:
+    print "Exception:\n",e
+finally:
+    grains_file.close()

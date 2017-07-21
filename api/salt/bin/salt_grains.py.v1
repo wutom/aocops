@@ -1,22 +1,10 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#coding=utf-8
 import salt.client as sc
-import json,redis
-import aliyun_grains
-import sys
-
+import json
 '''
     1.load_grains 获取所有主机的grains值
     2.写入到host_info.json和app_info.json
-    3.从redis获取阿里云信息写入到host_info.json
 '''
-######################redis信息
-rs = redis.Redis(host='redis.210', port=7100, db=0)
-aliyun_host_info = json.loads(rs.get('aliyun_host_info'))
-host_count = aliyun_host_info['TotalCount']
-host_values = aliyun_host_info['Instances']
-host_value = host_values['Instance']
-############################################################
 ###salt调用
 local = sc.LocalClient()
 hostonline = local.cmd('*', 'test.ping', timeout=5)
@@ -50,30 +38,6 @@ def host_info():
     finally:
         host_file.close()
 
-###aliyun add
-def aly_host_info():
-    try:
-        host_file = open("../tempfile/host_info.json", "a+")
-        gra = {}
-        for hl in range(host_count):
-            gra['ipv4'] = host_value[hl]["PublicIpAddress"]["IpAddress"][0]
-            gra['hostname'] = host_value[hl]["InstanceName"]
-            gra['server_id'] = host_value[hl]["InstanceId"]
-            gra['os'] = "CentOS6"
-            gra['types'] = host_value[hl]["InstanceType"]
-            gra['cpu_types'] = host_value[hl]["InstanceType"]
-            gra['cpu_num'] = host_value[hl]["Cpu"]
-            gra['mem'] = host_value[hl]["Memory"]
-            gra['disk_root'] = "40"
-            gra['disk_opt'] = "300"
-            gra_load = json.dumps(gra)
-            host_file.write(gra_load + '\n')
-    except Exception,e:
-        print "Exception:\n",e
-    finally:
-        host_file.close()
-
-
 def app_info():
     try:
         app_file = open("../tempfile/app_info.json", "w")
@@ -104,4 +68,3 @@ def app_info():
 if __name__ == '__main__':
     host_info()
     app_info()
-    aly_host_info()

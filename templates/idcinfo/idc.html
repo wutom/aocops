@@ -11,6 +11,7 @@
         </div>
       </div>
     </nav>
+
 <!-- 侧栏导航部分-->
     <div class="container-fluid">
       <div class="row">
@@ -24,55 +25,40 @@
       {% endif %}      
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="http://{{ server }}/idcinfo">数据中心</a></li>
+            <li class="active"><a href="http://{{ server }}/idcinfo">数据中心</a></li>
             <li><a href="http://{{ server }}/hostinfo">主机信息</a></li>
-            <li class="active"><a href="http://{{ server }}/appinfo">程序信息</a></li>
+            <li><a href="http://{{ server }}/appinfo">程序信息</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h4 class="sub-header">程序信息</h4>
+        <h4 class="sub-header">数据中心</h4>
           <div class="table-responsive">
             <table class="table table-striped">
             <thead>
                 <tr>
                   <th>编号</th>
-                  <th>程序名称</th>
-                  <th>主机名</th>
-                  <th>监听信息</th>
-                  <th>程序PID</th>
-                  <th>业务标签</th>
+                  <th>数据中心名称</th>
                   <th>维护者</th>
-                  <th>报警类型</th>
+                  <th>放置位置</th>
+                  <th>联系人</th>
+                  <th>数据中心类型</th>
                 </tr>
               </thead>
               <tbody>
-              {% if lia %}
-                {% for id, la in lia.items %}
+              {% if ic %}
+                {% for id, idc in ic.items %}
                 <tr>
                   <td>{{ id }}</td>
-                  <td>{{ la.app_name }}</td>
-                  <td>{{ la.hostname }}</td>
-                  <td>{{ la.app_listen }}</td>
-                  <td>{{ la.app_pid }}</td>
-                  <td>{{ la.app_label }}</td>
-                  <td>{{ la.app_manager }}</td>
-                  <td>{{ la.app_alarm }}</td>
+                  <td><a href="http://{{ server }}/cabinet/{{ id }}/">{{ idc.idc_name }}</a></td>
+                  <td>{{ idc.belong }}</td>
+                  <td>{{ idc.location }}</td>
+                  <td>{{ idc.contacts }}</td>
+                  <td>{{ idc.types_name }}</td>
                 </tr>
                 {% endfor %}
               {% endif %}
             </tbody>
             </table>
-<!--分页显示，在视图中引用分页变量，进行判断，默认显示页面没有href链接 -->
-            <ul class="pagination">
-            {% if lap %}
-              {% for pn in lap.paginator.page_range %}
-                {% ifequal pn lap.number %}
-            <li role="presentation" class="active"><a>{{ pn }}</a></li>
-                {% else %}
-            <li><a href="?page={{ pn }}">{{ pn }}</a></li>
-                {% endifequal %}
-              {% endfor %}
-            {% endif %}
           </div>
         </div>
       </div>

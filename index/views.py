@@ -27,7 +27,7 @@ def index_list(request):
 	list_types = aocops_indexType.objects.all().order_by('it_name')
 	#定义主机地址
 	server = request.META['HTTP_HOST']
-	img_serve = "c.ops.com"
+	img_serve = "m.ops.com"
 	list_file = aocops_fileImage.objects.all()
 	##定义空值导入数据库数值
 	db_types = {}
@@ -89,7 +89,7 @@ def index(request):
 	return HttpResponse(template.render(context))
 
 '''
-#@login_required(login_url='/login/')
+#login_required(login_url='/login/')
 def index(request):
 	username = request.COOKIES.get('username', '')
 	##获取概览数据
@@ -105,10 +105,16 @@ def index(request):
 	ail = aocops_indexList.objects.all().count() 
 	##程序汇总 
 	aif = app_info.objects.all().count()
+
 	##设备汇总
 	dif = device_info.objects.all().count()
+	sif = device_info.objects.filter(types_id=1).count()
+	nif = device_info.objects.filter(types_id=2).count()
 	##主机汇总
 	hif = host_info.objects.all().count()
+	##
+
+
 	bull = aocops_indexBulletin.objects.all()
 	bul = {}
 	i = 1
@@ -128,6 +134,8 @@ def index(request):
 		'aif' : aif,
 		'dif' : dif,
 		'hif' : hif,
+		'sif' : sif,
+		'nif' : nif,
 		'username' : username
 		},processors=[index_list])
 	return HttpResponse(template.render(context))
@@ -209,6 +217,140 @@ def appinfo(request):
 		},processors=[index_list])
 	return HttpResponse(template.render(context))
 
+
+###IDC 列表视图
+def idc_list(request):
+	Idc_Info = idc_info.objects.all()
+	icd = {}
+	i = 1
+	for ic in Idc_Info:
+		icd.update({i :{}})
+		icd[i]["idc_name"] = ic.idc_name
+		icd[i]["belong"] = ic.belong
+		icd[i]["location"] = ic.location
+		icd[i]["contacts"] = ic.contacts.first()
+		icd[i]["types_name"] = ic.types_name
+
+		i = i + 1
+	template = loader.get_template('idcinfo/idc.html')
+	context = RequestContext(request,{
+		'ic' : icd,
+		},processors=[index_list])
+	return HttpResponse(template.render(context))
+
+
+
+###机柜 列表视图
+'''
+根据URL传递的id查询到数据中心所有的机柜列表
+在根据机柜列表的id 去查询每个机柜里面的所有主机列表
+使用到列表和字典传递需要的值到视图中
+'''
+def cabinet_list(request, id):
+	idc_name = idc_info.objects.get(id=int(id))
+	cabinets = cabinet_info.objects.filter(belong_idc=int(id)).order_by('name')
+	cab_count = cabinets.count()
+	
+	dev_count = 0
+	cids = []
+	cabinet_list = []
+	dev_list = {}
+	
+###机柜列表视图
+	for cb in cabinets:
+		cids.append(int(cb.id))
+
+		cabinet_list.append({
+			'id' : int(cb.id),
+			'name' : cb.name,
+			'remark' : cb.remark,
+			})
+		dev_list.update({ int(cb.id) : [] })
+
+####每个机柜中主机列表视图
+	device = device_info.objects.filter(cabinet_id__in= tuple(cids)).order_by("loc")
+	for dv in device:
+		dev_list[int(dv.cabinet_id)].append({
+			'id' : int(dv.id),
+			'order' : dv.loc,
+			'name' : dv.name,
+			'ip1' : dv.ipaddr1,
+			'ip2' : dv.ipaddr2,
+			'label' : dv.label,
+			'user' : dv.user,
+			})
+		dev_count = dev_count + 1
+
+	template = loader.get_template('idcinfo/cabinet_list.html')
+	context = RequestContext(request,{
+		'cids' : cids,
+		'idc_name' : idc_name,
+		'cabinet_list' : cabinet_list,
+		'dev_list' : sort_dict(dev_list),
+		'cab_count' : len(cids),
+		'dev_count' : dev_count,
+		},processors=[index_list])
+	return HttpResponse(template.render(context))
+
+
+###自定义函数
+def sort_dict(dt):
+	new_dict = {}
+	for i in dt:
+		new_dict.update({ i : [] })
+		new_dict[i] = sorted(dt[i], key = lambda k: k['order'])
+	return new_dict
+
+
+
+
+###设备展示视图
+
+def device(request, id):
+	device = device_info.objects.get(id=int(id))
+	dev_name = device.name
+	dev_plant = device.plant_no
+	dev_sn = device.sn
+	dev_cabinet = device.cabinet
+	dev_spec = device.spec
+	dev_types = device.types
+	dev_loc = device.loc
+	dev_user = device.user
+	dev_label = device.label
+	dev_cpu = device.cpu
+	dev_mem = device.mem
+	dev_disk = device.disk
+	dev_ip1 = device.ipaddr1
+	dev_ip2 = device.ipaddr2
+	dev_sys = device.system
+	dev_remark = device.remark
+
+	template = loader.get_template('idcinfo/device.html')
+	context = RequestContext(request,{
+		'dev_name' : dev_name,
+		'dev_plant' : dev_plant,
+		'dev_sn' : dev_sn,
+		'dev_cabinet' : dev_cabinet,
+		'dev_spec' : dev_spec,
+		'dev_types' : dev_types,
+		'dev_loc' : dev_loc,
+		'dev_user' : dev_user,
+		'dev_label' : dev_label,
+		'dev_cpu' : dev_cpu,
+		'dev_mem' : dev_mem,
+		'dev_disk' : dev_disk,
+		'dev_ip1' : dev_ip1,
+		'dev_ip2' : dev_ip2,
+		'dev_sys' : dev_sys,
+		'dev_remark' : dev_remark,
+		},processors=[index_list])
+	return HttpResponse(template.render(context))
+
+
+
+'''
+下面未测试代码部分
+'''
 ## 获取请求数据
 def dnsfind(request):
     return render_to_response('index/dnsfind.html')

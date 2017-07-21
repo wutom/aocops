@@ -2,6 +2,8 @@
 from django.db import models
 from django.contrib import admin
 
+##认证方式基于django管理后台用户，本models暂时弃用
+##2017-06-26
 # Create your models here.
 
 class user_ldap_mail_mobile(models.Model):

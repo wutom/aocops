@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>爱接力IT信息平台</title>
+    <title>优易IT信息平台</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'bit37/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -45,7 +45,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">爱接力</a>
+          <a class="navbar-brand" href="#">优易数据</a>
         </div>
 <!-- 导航栏部分 -->
             <ul class="nav navbar-nav">
@@ -59,7 +59,6 @@
                         {% for id, item in types_items.items %}
                             {% if item.il_id == dt.it_id %}
                   <li><a href="{{ item.il_url }}">{{ item.il_name }}</a></li>
-                  <li><a href="#">One more separated link</a></li>
                             {% endif %}
                         {% endfor %}
                       {% endif %}
@@ -68,7 +67,7 @@
                 {% endif %}
               </li>
             </ul>
-<!-- 左边导航栏部分-->
+<!-- 左边导航栏部分
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="http://{{ server }}/logout">注销</a></li>
@@ -80,3 +79,4 @@
         </div>
       </div>
     </nav>
+-->
