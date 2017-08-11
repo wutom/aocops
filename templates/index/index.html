@@ -3,7 +3,7 @@
 <!-- 左边导航栏部分-->
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="http://{{ server }}/login">退出登录</a></li>
+            <li><a href="http://{{ server }}/login">注销</a></li>
             <li><a href="http://{{ server }}/admin">登陆后台</a></li>
           </ul>
           <!--<form class="navbar-form navbar-right"-->
@@ -40,35 +40,55 @@
           ----->
         </div>
 
-        <!--------------- 仪表盘部分暂时停用-->
+        <!--------------- 仪表盘部分---------------------------------->
         
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <!--------------------------------------
-          <h1 class="page-header">Dashboard</h1>
 
+          <h4 class="page-header">IT信息概览</h4>
+        <!- 报表饼形图部分 ->
           <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
+            <div class="col-xs-6 col-sm-3">
+              <h5>数据中心</h5>
+              <img src="/static/img/datacenter.png" width="251" height="201" class="img-responsive" alt="Generic placeholder thumbnail">
+              <span class="text-muted">
+        {% if idc_label_count %}
+          {% for key, value in idc_label_count.items %}
+          <li style="list-style:none;float:left;">{{ key }} <span class="badge">{{ value }}</span></a></li>
+          {% endfor %}
+        {% endif %}
+
+              </span>
             </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
+
+            <div class="col-xs-6 col-sm-3">
+              <h5>物理设备</h5>
+              <img src="/static/img/devicecount.png" width="251" height="201" class="img-responsive" alt="Generic placeholder thumbnail">
+              <span class="text-muted">
+
+        {% if dev_label_count %}
+          {% for key, value in dev_label_count.items %}
+          <li style="list-style:none;float:left;">{{ key }} <span class="badge">{{ value }}</span></a></li>
+          {% endfor %}
+        {% endif %}
+
+              </span>
             </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
+
+            <div class="col-xs-6 col-sm-3">
+              <h5>主机汇总</h5>
+              <img src="/static/img/datacenter.png" width="251" height="201" class="img-responsive" alt="Generic placeholder thumbnail">
+              <span class="text-muted">
+
+        {% if idc_label_count %}
+          {% for key, value in idc_label_count.items %}
+          <li style="list-style:none;float:left;">{{ key }} <span class="badge">{{ value }}</span></a></li>
+          {% endfor %}
+        {% endif %}
+
+              </span>
             </div>
           </div>
-          ---------------------------------->
+
 <!-- 公告栏-->
     <div class="page-header">
         <h4>信息公告</h4>
@@ -88,31 +108,31 @@
 
 <!-- 概览统计--> 
     <div class="page-header">
-        <h4>IT信息概览</h4>
+        <h4>项目汇总</h4>
       </div>
       <div class="row">
         <div class="col-sm-4">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">数据中心</h3>
+              <h3 class="panel-title">阳光PASS</h3>
             </div>
             <div class="panel-body">
               <p>
-        <a href="http://{{ server }}/idcinfo">公有云<span class="badge">{{ cidc }}</span></a>
-        <a href="http://{{ server }}/idcinfo">物理机房<span class="badge">{{ iidc }}</span></a>
-        <a href="http://{{ server }}/idcinfo">私有云 <span class="badge">{{ pidc }}</span></a>
+        <a href="http://{{ server }}/idcinfo">物理主机<span class="badge"></span></a>
+        <a href="http://{{ server }}/idcinfo">虚拟主机<span class="badge"></span></a>
+        <a href="http://{{ server }}/idcinfo">应用程序<span class="badge"></span></a>
               </p>
             </div>
           </div>
           <div class="panel panel-primary">
             <div class="panel-heading">
-              <h3 class="panel-title">设备汇总</h3>
+              <h3 class="panel-title">DAAS平台</h3>
             </div>
             <div class="panel-body">
              <p>
-        <a href="http://{{ server }}/idcinfo">总计 <span class="badge">{{ dif }}</span></a>
-        <a href="http://{{ server }}/idcinfo">服务器 <span class="badge">{{ sif }}</span></a>
-        <a href="http://{{ server }}/idcinfo">网络 <span class="badge">{{ nif }}</span></a>
+        <a href="http://{{ server }}/idcinfo">物理主机<span class="badge"></span></a>
+        <a href="http://{{ server }}/idcinfo">虚拟主机<span class="badge"></span></a>
+        <a href="http://{{ server }}/idcinfo">应用程序<span class="badge"></span></a>
               </p>
             </div>
           </div>
@@ -124,7 +144,7 @@
             </div>
             <div class="panel-body">
               <p>
-        <a href="#">总计 <span class="badge">{{ ail }}</span></a>
+        <a href="#">总计 <span class="badge"></span></a>
         <!--a href="#">开发测试 <span class="badge">42</span></a-->
               </p>
             </div>
@@ -135,8 +155,8 @@
             </div>
             <div class="panel-body">
               <p>
-        <a href="#">物理主机 <span class="badge">{{ sif }}</span></a>
-        <a href="#">虚拟主机 <span class="badge">{{ hif }}</span></a>
+        <a href="#">物理主机 <span class="badge"></span></a>
+        <a href="#">虚拟主机 <span class="badge"></span></a>
               </p>
             </div>
           </div>
@@ -148,7 +168,7 @@
             </div>
             <div class="panel-body">
               <p>
-        <a href="#">总计 <span class="badge">{{ aif }}</span></a>
+        <a href="#">总计 <span class="badge"></span></a>
         <!--a href="#">Online <span class="badge">42</span></a-->
               </p>
             </div>

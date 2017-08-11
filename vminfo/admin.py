@@ -10,7 +10,7 @@ class host_vm_info(admin.ModelAdmin):
     formfield_overrides = {
         models.ManyToManyField: {'widget': CheckboxSelectMultiple},
         }
-    list_display = ('hostname', 'lan_ipaddr', 'os_version', 'vm_mem', 'vm_disk', 'vm_cpu', 'vm_types', 'vm_location', 'vm_status')
+    list_display = ('hostname', 'lan_ipaddr', 'os_version', 'vm_mem', 'vm_disk', 'vm_cpu', 'vm_types', 'vm_label', 'vm_status')
     search_fields = ['machine_id', 'lan_ipaddr']
     list_per_page = 50
     ordering = ['id',]

@@ -20,6 +20,9 @@ from django.utils.encoding import smart_str
 from django.utils.http import urlquote
 from django.db.models import Q
 
+####加载自定义模块
+from api.python import matp
+
 #导航栏部分已全局变量的方式返回给具体视图
 
 def index_list(request):
@@ -93,28 +96,63 @@ def index(request):
 def index(request):
 	username = request.COOKIES.get('username', '')
 	##获取概览数据
-	##数据中心-IDC
-	#公有云
-	cidc =  idc_info.objects.filter(types_name_id=1).count()
-	#物理机房
-	iidc =  idc_info.objects.filter(types_name_id=2).count()
-	#私有云
-	pidc =  idc_info.objects.filter(types_name_id=3).count()
+	
+#####数据中心 类型统计
+	idc_types_list = idc_types.objects.all()
+	idc_label_count = {}
+	#i = 1
+	for itl in idc_types_list:
+	#	idc_label_count.update({i :{}})
+		idc_label_count[itl.name] = idc_info.objects.filter(types_name_id=int(itl.id)).count()
+	#	i = i + 1
 
-	##平台汇总
-	ail = aocops_indexList.objects.all().count() 
-	##程序汇总 
-	aif = app_info.objects.all().count()
+	##遍历idc_label_count 数据类型和类型统计数
+	idc_label = []
+	idc_types_count = []
 
-	##设备汇总
-	dif = device_info.objects.all().count()
-	sif = device_info.objects.filter(types_id=1).count()
-	nif = device_info.objects.filter(types_id=2).count()
-	##主机汇总
-	hif = host_info.objects.all().count()
-	##
+	for itc in idc_types_list:
+		idc_label.append(itc.name)
+		idc_types_count.append(idc_info.objects.filter(types_name_id=int(itc.id)).count())
+
+###-----------------------------------绘图部分------------------------------##
+##汇总数据中心报表图数据
+	data_figsizes = (2.5,2)
+
+	idc_path = 'static/img/datacenter.png'
+	idc_lab = matp.matp_label(idc_label)
+	idc_siz = matp.matp_size(idc_types_count)
+	figs = matp.matp_figsize(data_figsizes) 		
+	matp.matp_man(idc_lab,idc_siz,figs,idc_path)
 
 
+#####设备汇总 类型统计
+	dev_types_list = device_type.objects.all()
+	dev_label_count = {}
+
+	for dtl in dev_types_list:
+		dev_label_count[dtl.name] = device_info.objects.filter(types_id=int(dtl.id)).count()
+
+	##遍历dev_label_count 数据类型和类型统计数
+	dev_label = []
+	dev_types_count = []
+
+	for dtc in dev_types_list:
+		dev_label.append(dtc.name)
+		dev_types_count.append(device_info.objects.filter(types_id=int(dtc.id)).count())
+
+###-----------------------------------绘图部分------------------------------##
+##汇总物理设备报表图数据
+
+	dev_path = 'static/img/devicecount.png'
+	dev_lab = dev_label
+	dev_siz = dev_types_count
+	figs = data_figsizes
+	matp.matp_man(dev_lab,dev_siz,figs,dev_path)
+
+
+
+
+####
 	bull = aocops_indexBulletin.objects.all()
 	bul = {}
 	i = 1
@@ -127,15 +165,8 @@ def index(request):
 	template = loader.get_template('index/index.html')
 	context = RequestContext(request,{
 		'bul' : bul,
-		'cidc' : cidc,
-		'iidc' : iidc,
-		'pidc' : pidc,
-		'ail' : ail,
-		'aif' : aif,
-		'dif' : dif,
-		'hif' : hif,
-		'sif' : sif,
-		'nif' : nif,
+		'idc_label_count' : idc_label_count,
+		'dev_label_count' : dev_label_count,
 		'username' : username
 		},processors=[index_list])
 	return HttpResponse(template.render(context))

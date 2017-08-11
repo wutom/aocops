@@ -35,7 +35,7 @@ class host_info(models.Model):
     vm_disk = models.IntegerField(u'系统盘', null = True)
     vm_cpu = models.IntegerField(u'CPU', null = True)
     vm_types = models.CharField(u'主机类型', max_length=12, null = True)
-    vm_location = models.ForeignKey(info_location, verbose_name=u'放置位置', blank = True, null = True)
+    vm_label = models.ForeignKey(info_label, verbose_name=u'业务标签', blank = True, null=True)
     vm_status = models.ForeignKey(info_status, verbose_name=u'主机状态', blank = True, null = True)
     vm_manage = models.ManyToManyField(info_manager, verbose_name=u'维护者', blank = True, null = True)
     vm_remark = models.TextField(u'备注信息', max_length=256, blank = True, null = True)
