@@ -1,5 +1,7 @@
 {% load staticfiles %}
 {% include "index/head.html" %}
+{% load chartkick %}
+
 <!-- 左边导航栏部分-->
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -48,44 +50,19 @@
         <!- 报表饼形图部分 ->
           <div class="row placeholders">
             <div class="col-xs-6 col-sm-3">
-              <h5>数据中心</h5>
-              <img src="/static/img/datacenter.png" width="251" height="201" class="img-responsive" alt="Generic placeholder thumbnail">
-              <span class="text-muted">
-        {% if idc_label_count %}
-          {% for key, value in idc_label_count.items %}
-          <li style="list-style:none;float:left;">{{ key }} <span class="badge">{{ value }}</span></a></li>
-          {% endfor %}
-        {% endif %}
-
-              </span>
+              <!-- 采用chartkick模块绘图-->
+              {% pie_chart idc_label_count with height="200px" %}
+              <h5><span class="label label-info">数据中心:{{ idc_count }}</h5>
             </div>
 
             <div class="col-xs-6 col-sm-3">
-              <h5>物理设备</h5>
-              <img src="/static/img/devicecount.png" width="251" height="201" class="img-responsive" alt="Generic placeholder thumbnail">
-              <span class="text-muted">
-
-        {% if dev_label_count %}
-          {% for key, value in dev_label_count.items %}
-          <li style="list-style:none;float:left;">{{ key }} <span class="badge">{{ value }}</span></a></li>
-          {% endfor %}
-        {% endif %}
-
-              </span>
+              {% pie_chart dev_label_count with height="200px" %}
+              <h5><span class="label label-info">物理设备:{{ dev_count }}</h5>
             </div>
 
             <div class="col-xs-6 col-sm-3">
-              <h5>主机汇总</h5>
-              <img src="/static/img/hostcount.png" width="251" height="201" class="img-responsive" alt="Generic placeholder thumbnail">
-              <span class="text-muted">
-
-        {% if host_label_count %}
-          {% for key, value in host_label_count.items %}
-          <li style="list-style:none;float:left;">{{ key }} <span class="badge">{{ value }}</span></a></li>
-          {% endfor %}
-        {% endif %}
-
-              </span>
+              {% pie_chart host_label_count with height="200px" %}
+              <h5><span class="label label-info">主机汇总:{{ host_count }}</h5>
             </div>
           </div>
 
@@ -108,8 +85,11 @@
 
 <!-- 概览统计--> 
     <div class="page-header">
-        <h4>项目汇总</h4>
-      </div>
+        <h4>项目汇总:{{ label_all_count }}</h4>
+        {% bar_chart label_count with height="400px" %}
+    </div>
 
-    
+<!-- chartkick 部分 -->
+{% bar_chart data with height="400px" %}
+
 {% include "index/footer.html" %}
