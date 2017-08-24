@@ -92,12 +92,12 @@ def index(request):
 	return HttpResponse(template.render(context))
 
 '''
-#login_required(login_url='/login/')
+#@login_required(login_url='/login/')
 def index(request):
 	username = request.COOKIES.get('username', '')
 	##获取概览数据
 	
-#####数据中心 类型统计
+#####数据中心 类型统计-------------------------------------------------------
 	idc_types_list = idc_types.objects.all()
 	idc_label_count = {}
 	#i = 1
@@ -114,18 +114,18 @@ def index(request):
 		idc_label.append(itc.name)
 		idc_types_count.append(idc_info.objects.filter(types_name_id=int(itc.id)).count())
 
-###-----------------------------------绘图部分------------------------------##
+###------绘图部分--------##
 ##汇总数据中心报表图数据
 	data_figsizes = (2.5,2)
 
 	idc_path = 'static/img/datacenter.png'
 	idc_lab = matp.matp_label(idc_label)
 	idc_siz = matp.matp_size(idc_types_count)
-	figs = matp.matp_figsize(data_figsizes) 		
-	matp.matp_man(idc_lab,idc_siz,figs,idc_path)
+	figs = matp.matp_figsize(data_figsizes)
+	matp.matp_pie(idc_lab,idc_siz,figs,idc_path)
 
 
-#####设备汇总 类型统计
+#####设备汇总 类型统计-------------------------------------------------------
 	dev_types_list = device_type.objects.all()
 	dev_label_count = {}
 
@@ -140,19 +140,39 @@ def index(request):
 		dev_label.append(dtc.name)
 		dev_types_count.append(device_info.objects.filter(types_id=int(dtc.id)).count())
 
-###-----------------------------------绘图部分------------------------------##
+###------------绘图部分----------------##
 ##汇总物理设备报表图数据
 
 	dev_path = 'static/img/devicecount.png'
 	dev_lab = dev_label
 	dev_siz = dev_types_count
 	figs = data_figsizes
-	matp.matp_man(dev_lab,dev_siz,figs,dev_path)
+	matp.matp_pie(dev_lab,dev_siz,figs,dev_path)
 
 
+#####主机汇总 类型统计-------------------------------------------------------
+	host_types_list = host_info.objects.values('vm_types').distinct()
+	host_label_count = {}
+	host_label = []
+	host_types_count = []
 
+	for htl in host_types_list:
+		name_types = htl['vm_types']
+		host_label_count[name_types] = host_info.objects.filter(vm_types=name_types).count()
+	##遍历host_label_count 数据类型和类型统计数
+		host_label.append(name_types)
+		host_types_count.append(host_info.objects.filter(vm_types=name_types).count())
 
-####
+###---------绘图部分--------##
+##汇总物理设备报表图数据
+
+	dev_path = 'static/img/hostcount.png'
+	host_lab = host_label
+	host_siz = host_types_count
+	figs = data_figsizes
+	matp.matp_pie(host_lab,host_siz,figs,dev_path)
+
+##################
 	bull = aocops_indexBulletin.objects.all()
 	bul = {}
 	i = 1
@@ -167,14 +187,24 @@ def index(request):
 		'bul' : bul,
 		'idc_label_count' : idc_label_count,
 		'dev_label_count' : dev_label_count,
+		'host_label_count' : host_label_count,
 		'username' : username
 		},processors=[index_list])
 	return HttpResponse(template.render(context))
 	
-@login_required(login_url='/login/')
+#@login_required(login_url='/login/')
 def hostinfo(request):
-	limit = 20
+	#####主机汇总 类型统计-------------------------------------------------------
+	host_types_list = host_info.objects.values('vm_types').distinct()
+	host_label_count = {}
+
+	for htl in host_types_list:
+		name_types = htl['vm_types']
+		host_label_count[name_types] = host_info.objects.filter(vm_types=name_types).count()
+
+	limit = 50
 	list_host = host_info.objects.all()
+	host_count = host_info.objects.all().count()
 	paginator = Paginator(list_host, limit)
 	page = request.GET.get('page')
 
@@ -207,12 +237,14 @@ def hostinfo(request):
 	context = RequestContext(request,{
 		'lih' : lih,
 		'lhp' : lhp,
+		'host_count' : host_count,
+		'host_label_count' : host_label_count,
 		},processors=[index_list])
 	return HttpResponse(template.render(context))
 
-@login_required(login_url='/login/')
+#@login_required(login_url='/login/')
 def appinfo(request):
-	limit = 20
+	limit = 50
 	#获取导航分类id和分类名称
 	list_app = app_info.objects.all()
 	paginator = Paginator(list_app, limit)
@@ -331,8 +363,6 @@ def sort_dict(dt):
 		new_dict.update({ i : [] })
 		new_dict[i] = sorted(dt[i], key = lambda k: k['order'])
 	return new_dict
-
-
 
 
 ###设备展示视图

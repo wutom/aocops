@@ -49,11 +49,12 @@
                 <tr>
                   <th>&nbsp;</th>
                   <th>
-                      <div class="list-group">
+
                           <a href="#" class="list-group-item active">
                             机柜编号:{{ cab.name }}
                           </a>
-                      </div>
+
+
                           <table class="table table-bordered">
                             <thead>
                             <tr>
@@ -82,11 +83,10 @@
                     {% endifequal %}
                 {% endfor %}
                           </tbody>
-
                           </table>
+
                   </th>
                   <th class="col-sm-2"><p>{{ cab.remark }}</p></th>
-
                 </tr>
             {% endfor %}
             {% endif %}
@@ -95,5 +95,6 @@
         </div>
       </div>
     </div>
+
     
 {% include "index/footer.html" %}

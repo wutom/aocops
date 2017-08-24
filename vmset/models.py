@@ -34,13 +34,7 @@ class app_info_alarm(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = u'报警类型'
 
-class info_location(models.Model):
-    location = models.CharField(u'放置位置', max_length=20)
 
-    def __unicode__(self):
-        return self.location
-    class Meta:
-        verbose_name = verbose_name_plural = u'放置位置'
 #维护者信息
 class info_manager(models.Model):
     mana_name = models.CharField(u'维护者姓名', max_length=12, null=True)

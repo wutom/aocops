@@ -30,7 +30,7 @@ def app_info(appid):
     return appinfo
 
 def app_list():
-    appfind = os.popen('netstat -nltp').readlines()
+    appfind = os.popen('netstat -nltp|grep -v "-"').readlines()
     appok = appfind[2:]
     applist = {} 
     num = 0

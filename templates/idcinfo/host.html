@@ -1,0 +1,139 @@
+{% load staticfiles %}
+{% include "index/head.html" %}
+
+<!-- 左边导航栏部分-->
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://{{ server }}/logout">注销</a></li>
+            <li><a href="http://{{ server }}/admin">登陆后台</a></li>
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+
+<!-- 侧栏导航部分-->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+          <li><a href="http://{{ server }}/">信息概览</a></li>
+      {% if fil %}
+        {% for id, fi in fil.items %}
+          <li><a href="http://{{ server }}/{{ fi.fi_image }}">{{ fi.fi_name }}</a></li>
+        {% endfor %}
+      {% endif %}      
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="http://{{ server }}/idcinfo">数据中心</a></li>
+            <li><a href="http://{{ server }}/hostinfo">主机信息</a></li>
+            <li><a href="http://{{ server }}/appinfo">程序信息</a></li>
+          </ul>
+        </div>
+
+<!-- 主机基础部分-->
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="alert alert-info" role="alert">
+        <strong>主机名:{{ host_name }}---->业务标签:{{ host_label }}</strong> 
+        </div>
+
+        <!--信息内容展示部分-->
+        <div class="panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">主机信息</h3>
+            </div>
+            <div class="panel-body">
+              <!--具体表格-->
+              <div class="responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>主机名称</th>
+                <th>业务标签</th>
+                <th>主机类型</th>
+                <th>主机状态</th>
+                <th>放置位置</th>
+                <th>维护者</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ host_name }}</td>
+                <td>{{ host_label }}</td>
+                <td>{{ host_types }}</td>
+                <td>{{ host_status }}</td>
+                <td>{{ host_location }}</td>
+                <td>{{ host_manager }}</td>
+              </tr>
+            </tbody>
+            <thead>
+              <tr>
+                <th>主机ID</th>
+                <th>IP地址</th>
+                <th>OS版本</th>
+                <th>CPU个数</th>
+                <th>系统盘大小</th>
+                <th>内存大小</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ host_id }}</td>
+                <td>{{ host_ip }}</td>
+                <td>{{ host_os }}</td>
+                <td>{{ host_cpu }}</td>
+                <td>{{ host_disk }}</td>
+                <td>{{ host_mem }}</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          </div>
+          </div>
+        <!--信息内容展示结束-->
+
+        <!--信息内容展示部分-->
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h3 class="panel-title">程序信息</h3>
+            </div>
+            <div class="panel-body">
+              <!--具体表格-->
+              <div class="responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>程序名称</th>
+                <th>业务标签</th>
+                <th>程序监听</th>
+                <th>程序PID</th>
+                <th>主机ID</th>
+                <th>维护者</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% if appl %}
+            {% for id, al in appl.items %}
+              <tr>
+                <td>{{ al.app_name }}</td>
+                <td>{{ al.app_label }}</td>
+                <td>{{ al.app_listen }}</td>
+                <td>{{ al.app_id }}</td>
+                <td>{{ al.app_vm_id }}</td>
+                <td>{{ al.app_manager }}</td>
+              </tr>
+            {% endfor %}
+            {% endif %}
+            </tbody>
+          </table>
+        </div>
+            </div>
+          </div>
+        <!--信息内容展示部分-->
+        <!--信息内容展示结束-->
+        </div>
+
+    </div>
+    </div>
+    
+{% include "index/footer.html" %}

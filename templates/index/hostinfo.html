@@ -31,7 +31,12 @@
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h4 class="sub-header">主机信息</h4>
+        <h4 class="sub-header">主机信息 <span class="label label-info"> 总计:{{ host_count }} 分类统计:
+          {% if host_label_count %}
+            {% for key, value in host_label_count.items %}
+          {{ key }} ({{ value }})
+            {% endfor %}
+          {% endif %} </span></h4>
           <div class="table-responsive">
             <table class="table table-striped">
             <thead>
@@ -55,7 +60,7 @@
                 {% for id, lh in lih.items %}
                 <tr>
                   <td>{{ id }}</td>
-                  <td>{{ lh.lh_hostname }}</td>
+                  <td><a href="http://{{ server }}/host/{{ id }}/">{{ lh.lh_hostname }}</td>
                   <td>{{ lh.lan_ipaddr }}</td>
                   <td>{{ lh.os_version }}</td>
                   <td>{{ lh.vm_cpu }}</td>

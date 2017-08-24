@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.db import models
 from django.forms import CheckboxSelectMultiple
 from vminfo.models import host_info, app_info
+from idcinfo.models import cabinet_info
 
 
 #主机信息

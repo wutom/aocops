@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import salt.client as sc
 import json,redis
-import aliyun_grains
 import sys
 
 '''
@@ -10,13 +9,7 @@ import sys
     2.写入到host_info.json和app_info.json
     3.从redis获取阿里云信息写入到host_info.json
 '''
-######################redis信息
-rs = redis.Redis(host='redis.210', port=7100, db=0)
-aliyun_host_info = json.loads(rs.get('aliyun_host_info'))
-host_count = aliyun_host_info['TotalCount']
-host_values = aliyun_host_info['Instances']
-host_value = host_values['Instance']
-############################################################
+
 ###salt调用
 local = sc.LocalClient()
 hostonline = local.cmd('*', 'test.ping', timeout=5)
@@ -49,7 +42,7 @@ def host_info():
         print "Exception:\n",e
     finally:
         host_file.close()
-
+'''
 ###aliyun add
 def aly_host_info():
     try:
@@ -72,7 +65,7 @@ def aly_host_info():
         print "Exception:\n",e
     finally:
         host_file.close()
-
+'''
 
 def app_info():
     try:
@@ -104,4 +97,3 @@ def app_info():
 if __name__ == '__main__':
     host_info()
     app_info()
-    aly_host_info()

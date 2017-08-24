@@ -46,11 +46,11 @@ def hostinfoup(db_value):
         machine_id = v[0]
         vm_cpu = v[1]
         hostname = v[2]
-        vm_mem = v[4]
-        lan_ipaddr = v[5]
-        os_version = v[6]
-        vm_types = v[8]
-        vm_disk = v[9]
+        vm_mem = v[3]
+        lan_ipaddr = v[4]
+        os_version = v[5]
+        vm_types = v[7]
+        vm_disk = v[8]
 ###基本SQL语句
         sqlinstert = "INSERT INTO vminfo_host_info(machine_id, vm_cpu, hostname, vm_mem, lan_ipaddr, os_version, vm_disk, vm_types) values ('%s','%s','%s','%s','%s','%s','%s','%s')" % (machine_id, vm_cpu, hostname.decode('unicode_escape'), vm_mem, lan_ipaddr, os_version, vm_disk, vm_types)
 

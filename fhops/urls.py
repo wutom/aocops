@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^idcinfo/', 'index.views.idc_list'),
     url(r'^cabinet/(?P<id>\d+)/$', 'index.views.cabinet_list'),
     url(r'^device/(?P<id>\d+)/$', 'index.views.device'),
+    url(r'^host/(?P<id>\d+)/$', 'idcinfo.views.host_app'),
     #url(r'^cabinet/test/', 'index.views.cabinet_list'),
     ##其它个页面
     url(r'^hostinfo/', 'index.views.hostinfo'),
