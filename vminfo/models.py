@@ -18,7 +18,7 @@ class app_info(models.Model):
     app_label = models.ForeignKey(info_label, verbose_name=u'业务标签', blank = True, null=True)
     app_manager = models.ManyToManyField(info_manager, verbose_name=u'维护者', blank = True, null=True)
     app_alarm = models.ManyToManyField(app_info_alarm, verbose_name=u'报警类型', blank = True, null=True)
-    app_remark = models.TextField(u'备注信息', max_length=256, null=True)
+    app_remark = models.TextField(u'备注信息', max_length=256, blank = True, null=True)
 
     def __unicode__(self):
         return self.app_name

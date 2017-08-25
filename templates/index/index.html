@@ -86,10 +86,10 @@
 <!-- 概览统计--> 
     <div class="page-header">
         <h4>项目汇总:{{ label_all_count }}</h4>
-        {% bar_chart label_count with height="400px" %}
+        {% bar_chart data_label with height="600px" %}
     </div>
 
 <!-- chartkick 部分 -->
-{% bar_chart data with height="400px" %}
+<!--{% bar_chart data with height="400px" %}-->
 
 {% include "index/footer.html" %}

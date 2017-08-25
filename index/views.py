@@ -149,14 +149,33 @@ def index(request):
 		host_label.append(name_types)
 		host_types_count.append(host_info.objects.filter(vm_types=name_types).count())
 
-#####项目汇总 类型统计
+#####项目汇总 类型统计 多为柱状图需要列表，字典组合形式实现 格式如下示例
 	label_types_list = info_label.objects.all()
 	label_all_count = info_label.objects.all().count()
-	label_count = {}
-
+	data_host = []
+	data_cpu = []
+	data_app = []
 	for ltl in label_types_list:
-		name_label = str(ltl)
-		label_count[name_label] = host_info.objects.filter(vm_label=int(ltl.id)).count()
+		cpu_list = []
+		app_list = []
+		host_list = []
+		name = str(ltl)
+		name_host = host_info.objects.filter(vm_label=int(ltl.id)).count()
+		name_app = app_info.objects.filter(app_label_id=ltl.id).count()
+		vm_cpu = []
+		cpu_count = host_info.objects.filter(vm_label=int(ltl.id))
+		for vcpu in cpu_count:
+			vm_cpu.append(int(vcpu.vm_cpu))
+		host_list.append(str(name))
+		host_list.append(name_host)
+		cpu_list.append(str(name))
+		cpu_list.append((sum(vm_cpu)))
+		app_list.append(str(name))
+		app_list.append(name_app)
+		data_host.append(host_list)
+		data_cpu.append(cpu_list)
+		data_app.append(app_list)
+		data_label=[{'data': data_host, 'name': 'host'}, {'data':data_cpu, 'name': 'CPU'}, {'data': data_app, 'name': 'APP'}]
 
 ####测试数据
 	#data = {'Chrome': 52.9, 'Opera': 1.6, 'Firefox': 27.7}
@@ -182,8 +201,8 @@ def index(request):
 		'idc_count' : idc_count,
 		'dev_count' : dev_count,
 		'host_count' : host_count,
-		'label_count' :label_count,
 		'label_all_count' : label_all_count,
+		'data_label' : data_label,
 		'username' : username,
 		'data' : data,
 		'value' : value,
