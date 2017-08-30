@@ -1,10 +1,10 @@
 #-*- coding: UTF-8 -*-
 import sys,ldap
 import ldap
-LDAP_HOST = '192.168.1.39'
-USER = 'cn=Manager,dc=domain,dc=com'
-PASSWORD = 'password'
-BASE_DN = 'ou=dev,dc=domain,dc=com'
+LDAP_HOST = '192.168.0.99'
+USER = 'cn=wangtao,dc=youedata,dc=com'
+PASSWORD = '123456'
+BASE_DN = 'ou=People,dc=youedata,dc=com'
 class LDAPTool:
       
     def __init__(self,ldap_host=None,base_dn=None,user=None,password=None):
@@ -43,7 +43,6 @@ class LDAPTool:
             if result_type == ldap.RES_SEARCH_ENTRY:
                 #dn = result[0][0]
                 return result_data[0][0]
-                print nresult_data[0][0]
             else:
                 return None
         except ldap.LDAPError, e:
@@ -93,3 +92,8 @@ class LDAPTool:
             return True
         except ldap.LDAPError,e:
             return False
+
+
+if __name__ == '__main__':
+    ldap_update_pass()
+    ldap_get_user()

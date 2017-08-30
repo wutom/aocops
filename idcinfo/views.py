@@ -66,52 +66,128 @@ def index_list(request):
 		}
 
 
-
-def host_app(request, id):
-	host = host_info.objects.get(id=int(id))
-	app = app_info.objects.filter(app_vm_id=int(host.machine_id))
-    ####主机信息
-	host_name = host.hostname
-	host_os = host.os_version
-	host_ip = host.lan_ipaddr
-	host_id = host.machine_id
-	host_mem = host.vm_mem
-	host_disk = host.vm_disk
-	host_cpu = host.vm_cpu
-	host_types = host.vm_types
-	host_location = host.vm_location
-	host_label = host.vm_label
-	host_status = host.vm_status
-	host_manager = host.vm_manage.first()
-
-	####程序信息
-	appl = {}
+###IDC 列表视图
+def idc_list(request):
+	Idc_Info = idc_info.objects.all()
+	icd = {}
 	i = 1
-	for al in app:
-		appl.update({i : {}})
-		appl[i]["app_name"] = al.app_name
-		appl[i]["app_label"] = al.app_label
-		appl[i]["app_listen"] = al.app_listen
-		appl[i]["app_id"] = al.app_id
-		appl[i]["app_vm_id"] = al.app_vm_id
-		appl[i]["app_manager"] = al.app_manager.first()
+	for ic in Idc_Info:
+		icd.update({i :{}})
+		icd[i]["idc_name"] = ic.idc_name
+		icd[i]["belong"] = ic.belong
+		icd[i]["location"] = ic.location
+		icd[i]["contacts"] = ic.contacts.first()
+		icd[i]["types_name"] = ic.types_name
 
 		i = i + 1
-
-	template = loader.get_template('idcinfo/host.html')
+	template = loader.get_template('idcinfo/idc.html')
 	context = RequestContext(request,{
-		'host_name' : host_name,
-		'host_os' : host_os,
-		'host_ip' : host_ip,
-		'host_id' : host_id,
-		'host_mem' : host_mem,
-		'host_disk' : host_disk,
-		'host_cpu' : host_cpu,
-		'host_types' : host_types,
-		'host_location' : host_location,
-		'host_label' : host_label,
-		'host_status' : host_status,
-		'host_manager' : host_manager,
-		'appl' : appl,
+		'ic' : icd,
+		},processors=[index_list])
+	return HttpResponse(template.render(context))
+
+
+
+###机柜 列表视图
+'''
+根据URL传递的id查询到数据中心所有的机柜列表
+在根据机柜列表的id 去查询每个机柜里面的所有主机列表
+使用到列表和字典传递需要的值到视图中
+'''
+def cabinet_list(request, id):
+	idc_name = idc_info.objects.get(id=int(id))
+	cabinets = cabinet_info.objects.filter(belong_idc=int(id)).order_by('name')
+	cab_count = cabinets.count()
+	
+	dev_count = 0
+	cids = []
+	cabinet_list = []
+	dev_list = {}
+	
+###机柜列表视图
+	for cb in cabinets:
+		cids.append(int(cb.id))
+
+		cabinet_list.append({
+			'id' : int(cb.id),
+			'name' : cb.name,
+			'remark' : cb.remark,
+			})
+		dev_list.update({ int(cb.id) : [] })
+
+####每个机柜中主机列表视图
+	device = device_info.objects.filter(cabinet_id__in= tuple(cids)).order_by("loc")
+	for dv in device:
+		dev_list[int(dv.cabinet_id)].append({
+			'id' : int(dv.id),
+			'order' : dv.loc,
+			'name' : dv.name,
+			'ip1' : dv.ipaddr1,
+			'ip2' : dv.ipaddr2,
+			'label' : dv.label,
+			'user' : dv.user,
+			})
+		dev_count = dev_count + 1
+
+	template = loader.get_template('idcinfo/cabinet_list.html')
+	context = RequestContext(request,{
+		'cids' : cids,
+		'idc_name' : idc_name,
+		'cabinet_list' : cabinet_list,
+		'dev_list' : sort_dict(dev_list),
+		'cab_count' : len(cids),
+		'dev_count' : dev_count,
+		},processors=[index_list])
+	return HttpResponse(template.render(context))
+
+
+###自定义函数
+def sort_dict(dt):
+	new_dict = {}
+	for i in dt:
+		new_dict.update({ i : [] })
+		new_dict[i] = sorted(dt[i], key = lambda k: k['order'])
+	return new_dict
+
+
+###设备展示视图
+
+def device(request, id):
+	device = device_info.objects.get(id=int(id))
+	dev_name = device.name
+	dev_plant = device.plant_no
+	dev_sn = device.sn
+	dev_cabinet = device.cabinet
+	dev_spec = device.spec
+	dev_types = device.types
+	dev_loc = device.loc
+	dev_user = device.user
+	dev_label = device.label
+	dev_cpu = device.cpu
+	dev_mem = device.mem
+	dev_disk = device.disk
+	dev_ip1 = device.ipaddr1
+	dev_ip2 = device.ipaddr2
+	dev_sys = device.system
+	dev_remark = device.remark
+
+	template = loader.get_template('idcinfo/device.html')
+	context = RequestContext(request,{
+		'dev_name' : dev_name,
+		'dev_plant' : dev_plant,
+		'dev_sn' : dev_sn,
+		'dev_cabinet' : dev_cabinet,
+		'dev_spec' : dev_spec,
+		'dev_types' : dev_types,
+		'dev_loc' : dev_loc,
+		'dev_user' : dev_user,
+		'dev_label' : dev_label,
+		'dev_cpu' : dev_cpu,
+		'dev_mem' : dev_mem,
+		'dev_disk' : dev_disk,
+		'dev_ip1' : dev_ip1,
+		'dev_ip2' : dev_ip2,
+		'dev_sys' : dev_sys,
+		'dev_remark' : dev_remark,
 		},processors=[index_list])
 	return HttpResponse(template.render(context))

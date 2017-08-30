@@ -3,16 +3,21 @@
 ###
 
 import ldap
-#from pexpect import pxssh
-import pxssh
+#####根据linux python版本加载 pxssh
+from pexpect import pxssh
+#import pxssh
 
-host = "ldap://192.168.1.202"
-bashDN = "ou=aijieli,dc=domain,dc=com"
-Admin = "cn=Manager,dc=domain,dc=com"
-Admin_pass = "password"
-ssh_host = "192.168.1.202"
-ssh_user = "root"
-ssh_pass = "password"
+###加载api的主配置文件获取必要的参数
+from api.conf import config
+
+host = config.LDAPCF['host']
+bashDN = config.LDAPCF['bashDN']
+Admin = config.LDAPCF['Admin']
+Admin_pass = config.LDAPCF['Admin_pass']
+##通过ssh到linux主机重置密码方式----暂不启用
+ssh_host = config.LDAPCF['ssh_host']
+ssh_user = config.LDAPCF['ssh_user']
+ssh_pass = config.LDAPCF['ssh_pass']
 
 def ldap_getcn(name):
 	try:
@@ -26,7 +31,7 @@ def ldap_getcn(name):
 
 		result_data = conn.result(ldap_result_id,0)
 		if result_data[1] == []:
-			print "%s doesn't exist." %name
+			print "%s doesn't exist." % name
 		else:
 			LDID = result_data[1][0][0]
 			return LDID
@@ -64,8 +69,11 @@ def resetpass(username,newpwd="1234567"):
 		child = pxssh.pxssh()
 		child.login(ssh_host,ssh_user,ssh_pass)
 		child.sendline(shell_cmd)
-		child.prompt()
+		child_status = child.prompt()
+		if child_status == True:
+			return True
+		else:
+			return False
 		child.logout()
-		return True
 	except Exception,e:
 		return False

@@ -1,26 +1,16 @@
 {% load staticfiles %}
 {% include "index/head.html" %}
 
-<!-- 左边导航栏部分-->
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="http://{{ server }}/logout">注销</a></li>
-            <li><a href="http://{{ server }}/admin">登陆后台</a></li>
-          </ul>
-
-        </div>
-      </div>
-    </nav>
-
-<!-- 侧栏导航部分-->
+<!-- 侧边主导航栏-->
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-          <li><a href="http://{{ server }}/">信息概览</a></li>
+          <li><a href="http://{{ server }}/">信息概览 <span class="sr-only">(current)</span></a></li>
+<!-- 文档导航栏-->
       {% if fil %}
         {% for id, fi in fil.items %}
-          <li><a href="http://{{ server }}/{{ fi.fi_image }}">{{ fi.fi_name }}</a></li>
+          <li><a href="http://{{ img_server }}/{{ fi.fi_image }}">{{ fi.fi_name }}</a></li>
         {% endfor %}
       {% endif %}      
           </ul>
