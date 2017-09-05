@@ -3,7 +3,7 @@
 #感谢团队中的jiqin，wsk。  
 #修改添加目录后请更新此文档  
 #  
-___
+
 ####此系统基于python2.7 django1.8.3 开发，并在CentOS6和CentOS7正常运行####模块介绍  
 	-api #里面包含conf一些可配置信息，例如数据库信息，saltstack信息和自定义的一些脚本模块  
 	-idcinfo   #数据中心模块 包含了IDC 机柜 设备管理  
