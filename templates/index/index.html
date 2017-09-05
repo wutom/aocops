@@ -34,20 +34,20 @@
             <div class="col-xs-6 col-sm-3">
               <!-- 采用chartkick模块绘图-->
               {% pie_chart idc_label_count with height="200px" %}
-              <h5><span class="label label-info">数据中心:{{ idc_count }}</h5>
+              <h5><span class="label label-info">数据中心:{{ idc_count }}</span></h5>
             </div>
 
             <div class="col-xs-6 col-sm-3">
               {% pie_chart dev_label_count with height="200px" %}
-              <h5><span class="label label-info">物理设备:{{ dev_count }}</h5>
+              <h5><span class="label label-info">物理设备:{{ dev_count }}</span></h5>
             </div>
 
             <div class="col-xs-6 col-sm-3">
               {% pie_chart host_label_count with height="200px" %}
-              <h5><span class="label label-info">主机汇总:{{ host_count }}</h5>
+              <h5><span class="label label-info">主机汇总:{{ host_count }}</span></h5>
             </div>
           </div>
-
+        </div>
 <!-- 公告栏-- 暂时屏蔽>
     <div class="page-header">
         <h4>信息公告</h4>
@@ -65,9 +65,22 @@
               {% endfor %}
             {% endif %}
 
+
+<!-- 折线图 --> 
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h4 class="page-header">项目汇总:{{ label_all_count }}</h4>
+        {% area_chart data_goals with height="200px" %}
+    </div>
+
+<!-- 雷达图--> 
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h4 class="page-header">项目汇总:{{ label_all_count }}</h4>
+        {% area_chart data_label with height="600px" %}
+    </div>
+
 <!-- 概览统计--> 
-    <div class="page-header">
-        <h4>项目汇总:{{ label_all_count }}</h4>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h4 class="page-header">项目汇总:{{ label_all_count }}</h4>
         {% bar_chart data_label with height="600px" %}
     </div>
 

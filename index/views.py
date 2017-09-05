@@ -176,8 +176,16 @@ def index(request):
 		data_cpu.append(cpu_list)
 		data_app.append(app_list)
 		data_label=[{'data': data_host, 'name': 'host'}, {'data':data_cpu, 'name': 'CPU'}, {'data': data_app, 'name': 'APP'}]
+		data_goals=[{'data': idc_label_count, 'name': u'数据中心'},{'data': dev_label_count, 'name': u'设备汇总'},{'data': host_label_count, 'name': u'主机汇总'}, ]
 
 ####测试数据
+	Tline=[
+  [u"大头无线", "2006-06-01", "2011-07-01"],
+  [u"酷六网", "2011-07-03", "2013-01-01"],
+  [u"爱康国宾", "2013-01-03", "2016-01-01"],
+  [u"爱接力", "2016-01-03", "2017-07-03"],
+  [u"国信优易", "2017-07-05", "2017-09-01"],
+  ]
 	#data = {'Chrome': 52.9, 'Opera': 1.6, 'Firefox': 27.7}
 	data = [{'data': [[u'项目1', 52.9], ['项目2', 50.7]], 'name': u'物理机'},
  {'data': [[u'项目1', 27.7], ['项目2', 25.9]], 'name': u'虚拟机'}]
@@ -198,6 +206,7 @@ def index(request):
 		'idc_label_count' : idc_label_count,
 		'dev_label_count' : dev_label_count,
 		'host_label_count' : host_label_count,
+		'data_goals' : data_goals,
 		'idc_count' : idc_count,
 		'dev_count' : dev_count,
 		'host_count' : host_count,
@@ -206,6 +215,7 @@ def index(request):
 		'username' : username,
 		'data' : data,
 		'value' : value,
+		'Tline' : Tline,
 		},processors=[index_list])
 	return HttpResponse(template.render(context))
 
